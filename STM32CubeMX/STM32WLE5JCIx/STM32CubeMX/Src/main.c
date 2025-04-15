@@ -100,9 +100,9 @@ void SystemClock_Config(void);
     {
       /* USER CODE END WHILE */
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_SET);
-      HAL_Delay(500);
+      HAL_Delay(1000);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
-      HAL_Delay(500);
+      HAL_Delay(1000);
       
       /* USER CODE BEGIN 3 */
     }
