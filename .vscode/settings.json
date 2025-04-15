@@ -1,0 +1,14 @@
+{
+    "clangd.arguments": [
+        "--compile-commands-dir=c:\\Users\\eigenaar\\Desktop\\Files Sorted\\School\\Windesheim\\KBS Internet of Things\\KBS_Buitenverlichting\\out\\CubeMX\\STM32WLE5JCIx\\Debug"
+    ],
+    "cmsis-csolution.actions": [
+        {
+            "path": "CubeMX.csolution.yml",
+            "target": "STM32WLE5JCIx",
+            "config": {
+                "run": "Flash Device"
+            }
+        }
+    ]
+}

@@ -1,0 +1,46 @@
+cbuild-run:
+  generated-by: csolution version 2.8.0
+  solution: CubeMX.csolution.yml
+  target-type: STM32WLE5JCIx
+  compiler: AC6
+  device: STMicroelectronics::STM32WLE5JCIx
+  device-pack: Keil::STM32WLxx_DFP@2.0.1
+  programming:
+    - algorithm: ${CMSIS_PACK_ROOT}/Keil/STM32WLxx_DFP/2.0.1/CMSIS/Flash/STM32WLxx_CM4.FLM
+      start: 0x08000000
+      size: 0x00040000
+      ram-start: 0x20000000
+      ram-size: 0x00008000
+      default: true
+  system-descriptions:
+    - file: ${CMSIS_PACK_ROOT}/Keil/STM32WLxx_DFP/2.0.1/CMSIS/SVD/STM32WLE5_CM4.svd
+      type: svd
+  output:
+    - file: out/CubeMX/STM32WLE5JCIx/Debug/CubeMX.axf
+      info: generate by CubeMX.Debug+STM32WLE5JCIx
+      type: elf
+  system-resources:
+    memory:
+      - name: SRAM1
+        access: rwx
+        start: 0x20000000
+        size: 0x00008000
+        default: true
+        from-pack: Keil::STM32WLxx_DFP@2.0.1
+      - name: SRAM2
+        access: rwx
+        start: 0x20008000
+        size: 0x00008000
+        default: true
+        from-pack: Keil::STM32WLxx_DFP@2.0.1
+      - name: FLASH
+        access: rx
+        start: 0x08000000
+        size: 0x00040000
+        default: true
+        startup: true
+        from-pack: Keil::STM32WLxx_DFP@2.0.1
+  debugger:
+    - name: <default>
+      port: swd
+      clock: 10000000

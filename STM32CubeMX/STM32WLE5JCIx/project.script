@@ -1,0 +1,5 @@
+load STM32WLE5JCIx
+project name STM32CubeMX
+project toolchain "MDK-ARM V5"
+project path "C:\Users\eigenaar\Desktop\Files Sorted\School\Windesheim\KBS Internet of Things\KBS_Buitenverlichting\STM32CubeMX\STM32WLE5JCIx"
+SetCopyLibrary "copy only"
