@@ -5,23 +5,48 @@ generator-import:
     - USE_HAL_DRIVER
     - STM32WLE5xx
   add-path:
+    - ./STM32CubeMX/Utilities/trace/adv_trace
     - ./STM32CubeMX/Drivers/STM32WLxx_HAL_Driver/Inc
     - ./STM32CubeMX/Drivers/STM32WLxx_HAL_Driver/Inc/Legacy
+    - ./STM32CubeMX/Utilities/misc
+    - ./STM32CubeMX/Utilities/sequencer
+    - ./STM32CubeMX/Utilities/timer
+    - ./STM32CubeMX/Utilities/lpm/tiny_lpm
     - ./STM32CubeMX/Drivers/CMSIS/Device/ST/STM32WLxx/Include
+    - ./STM32CubeMX/Middlewares/Third_Party/SubGHz_Phy
+    - ./STM32CubeMX/Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver
     - ./STM32CubeMX/Inc
     - ./MX_Device
   groups:
     - group: CubeMX
       files:
         - file: ./STM32CubeMX/Src/main.c
+        - file: ./STM32CubeMX/Src/stm32_lpm_if.c
+        - file: ./STM32CubeMX/Src/sys_app.c
+        - file: ./STM32CubeMX/Src/app_subghz_phy.c
+        - file: ./STM32CubeMX/Src/subghz_phy_app.c
+        - file: ./STM32CubeMX/Src/radio_board_if.c
+        - file: ./STM32CubeMX/Src/timer_if.c
+        - file: ./STM32CubeMX/Src/stm32_adv_trace_if.c
         - file: ./STM32CubeMX/Src/stm32wlxx_it.c
         - file: ./STM32CubeMX/Src/stm32wlxx_hal_msp.c
+        - file: ./STM32CubeMX/Utilities/trace/adv_trace/stm32_adv_trace.c
+        - file: ./STM32CubeMX/Utilities/misc/stm32_mem.c
+        - file: ./STM32CubeMX/Utilities/misc/stm32_systime.c
+        - file: ./STM32CubeMX/Utilities/misc/stm32_tiny_sscanf.c
+        - file: ./STM32CubeMX/Utilities/misc/stm32_tiny_vsnprintf.c
+        - file: ./STM32CubeMX/Utilities/sequencer/stm32_seq.c
+        - file: ./STM32CubeMX/Utilities/timer/stm32_timer.c
+        - file: ./STM32CubeMX/Utilities/lpm/tiny_lpm/stm32_lpm.c
+        - file: ./STM32CubeMX/Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/lr_fhss_mac.c
+        - file: ./STM32CubeMX/Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio.c
+        - file: ./STM32CubeMX/Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio_driver.c
+        - file: ./STM32CubeMX/Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio_fw.c
+        - file: ./STM32CubeMX/Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/wl_lr_fhss.c
         - file: ./STM32CubeMX/MDK-ARM/startup_stm32wle5xx.s
         - file: ./STM32CubeMX/Src/system_stm32wlxx.c
     - group: STM32 HAL Driver
       files:
-        - file: ./STM32CubeMX/Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_pwr.c
-        - file: ./STM32CubeMX/Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_pwr_ex.c
         - file: ./STM32CubeMX/Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc.c
         - file: ./STM32CubeMX/Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c
         - file: ./STM32CubeMX/Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_flash.c
@@ -29,6 +54,9 @@ generator-import:
         - file: ./STM32CubeMX/Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_gpio.c
         - file: ./STM32CubeMX/Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_dma.c
         - file: ./STM32CubeMX/Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_dma_ex.c
+        - file: ./STM32CubeMX/Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_pwr.c
+        - file: ./STM32CubeMX/Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_pwr_ex.c
         - file: ./STM32CubeMX/Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_cortex.c
         - file: ./STM32CubeMX/Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal.c
         - file: ./STM32CubeMX/Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_exti.c
+        - file: ./STM32CubeMX/Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_subghz.c

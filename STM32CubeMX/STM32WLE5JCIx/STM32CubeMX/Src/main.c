@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "app_subghz_phy.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -40,6 +41,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+SUBGHZ_HandleTypeDef hsubghz;
 
 /* USER CODE BEGIN PV */
 
@@ -47,6 +49,7 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -60,55 +63,47 @@ void SystemClock_Config(void);
   * @brief  The application entry point.
   * @retval int
   */
-  int main(void)
-  {
-    uint8_t ledValue = 0;
-    /* USER CODE BEGIN 1 */
+int main(void)
+{
+
+  /* USER CODE BEGIN 1 */
   
-    /* USER CODE END 1 */
+  /* USER CODE END 1 */
+
+  /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* USER CODE BEGIN Init */
   
-    /* MCU Configuration--------------------------------------------------------*/
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
+  SystemClock_Config();
+
+  /* USER CODE BEGIN SysInit */
   
-    /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-    HAL_Init();
-  
-    /* USER CODE BEGIN Init */
-  
-    /* USER CODE END Init */
-  
-    /* Configure the system clock */
-    SystemClock_Config();
-  
-    /* USER CODE BEGIN SysInit */
-  
-    /* USER CODE END SysInit */
-  
-    /* Initialize all configured peripherals */
-    /* USER CODE BEGIN 2 */
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_SubGHz_Phy_Init();
+  /* USER CODE BEGIN 2 */
     // initializeRegisters();
-    /* USER CODE END 2 */
-    __HAL_RCC_GPIOB_CLK_ENABLE();
-    GPIO_InitTypeDef GPIO_InitStruct;
-    GPIO_InitStruct.Pin = GPIO_PIN_5;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    /* Infinite loop */
-    /* USER CODE BEGIN WHILE */
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
     while (1)
     {
-      /* USER CODE END WHILE */
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_SET);
-      HAL_Delay(1000);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
-      HAL_Delay(1000);
-      
-      /* USER CODE BEGIN 3 */
-    }
-    /* USER CODE END 3 */
+    /* USER CODE END WHILE */
+    MX_SubGHz_Phy_Process();
+
+    /* USER CODE BEGIN 3 */
   }
-  
+  /* USER CODE END 3 */
+}
 
 /**
   * @brief System Clock Configuration
@@ -150,6 +145,50 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief SUBGHZ Initialization Function
+  * @param None
+  * @retval None
+  */
+void MX_SUBGHZ_Init(void)
+{
+
+  /* USER CODE BEGIN SUBGHZ_Init 0 */
+
+  /* USER CODE END SUBGHZ_Init 0 */
+
+  /* USER CODE BEGIN SUBGHZ_Init 1 */
+
+  /* USER CODE END SUBGHZ_Init 1 */
+  hsubghz.Init.BaudratePrescaler = SUBGHZSPI_BAUDRATEPRESCALER_8;
+  if (HAL_SUBGHZ_Init(&hsubghz) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN SUBGHZ_Init 2 */
+
+  /* USER CODE END SUBGHZ_Init 2 */
+
+}
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+
+  /* USER CODE END MX_GPIO_Init_1 */
+
+  /* GPIO Ports Clock Enable */
+
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+
+  /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */

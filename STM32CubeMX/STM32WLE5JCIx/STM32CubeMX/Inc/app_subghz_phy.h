@@ -1,10 +1,10 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file           : main.h
-  * @brief          : Header for main.c file.
-  *                   This file contains the common defines of the application.
-  ******************************************************************************
+  * @file    app_subghz_phy.h
+  * @author  MCD Application Team
+  * @brief   Header of application of the SubGHz_Phy Middleware
+   ******************************************************************************
   * @attention
   *
   * Copyright (c) 2025 STMicroelectronics.
@@ -19,17 +19,14 @@
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __MAIN_H
-#define __MAIN_H
+#ifndef __APP_SUBGHZ_PHY_H__
+#define __APP_SUBGHZ_PHY_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32wlxx_hal.h"
-
-/* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
@@ -44,27 +41,33 @@ extern "C" {
 
 /* USER CODE END EC */
 
+/* External variables --------------------------------------------------------*/
+/* USER CODE BEGIN EV */
+
+/* USER CODE END EV */
+
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
 
 /* USER CODE END EM */
 
-/* Exported functions prototypes ---------------------------------------------*/
-void Error_Handler(void);
-void MX_SUBGHZ_Init(void);
+/* Exported Functions Prototypes ---------------------------------------------*/
+/**
+  * @brief  Init SubGHz Radio Application
+  */
+void MX_SubGHz_Phy_Init(void);
+
+/**
+  * @brief  SubGHz Radio Application Process
+  */
+void MX_SubGHz_Phy_Process(void);
 
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
 
-/* Private defines -----------------------------------------------------------*/
-
-/* USER CODE BEGIN Private defines */
-
-/* USER CODE END Private defines */
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __MAIN_H */
+#endif /*__APP_SUBGHZ_PHY_H__*/
