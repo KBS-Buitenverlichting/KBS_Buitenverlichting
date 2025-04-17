@@ -45,6 +45,7 @@
 const uint8_t TCXO_TIME_MARGIN = 5; // Extra time to ensure proper startup
 const uint16_t TRANSMIT_PERIOD_MS = 5000;
 const uint32_t FREQUENCY = 868100000; // 868,1 MHz
+#define DELAY_MS 266
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -57,17 +58,15 @@ SUBGHZ_HandleTypeDef hsubghz;
 
 /* USER CODE BEGIN PV */
 static RadioEvents_t RadioEvents;
-static UTIL_TIMER_Object_t timerTransmit;
 static unsigned char buffer[] = "STM32WLE5JCIx";
-static uint16_t blinkDelay = 1000;
 /* USER CODE END PV */
 
 /* Private function prototypes
    -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+inline void delay(const uint32_t delay);
 void Gpio_Init(void);
-static void TransmitPacket(void *);
 static void OnTxDone(void);
 static void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi,
                      int8_t LoraSnr_FskCfo);
@@ -109,7 +108,7 @@ int main(void) {
   /* USER CODE END SysInit */
 
   /* USER CODE BEGIN 2 */
-  /*RadioEvents.TxDone = OnTxDone;
+  RadioEvents.TxDone = OnTxDone;
   RadioEvents.RxDone = OnRxDone;
   RadioEvents.TxTimeout = OnTxTimeout;
   RadioEvents.RxTimeout = OnRxTimeout;
@@ -120,10 +119,10 @@ int main(void) {
   Radio.SetTxConfig(MODEM_LORA, 22, 0, LORA_BW_500, LORA_SF7, LORA_CR_4_6,
                     RADIO_PREAMBLE_DETECTOR_32_BITS, LORA_PACKET_FIXED_LENGTH,
                     LORA_CRC_ON, 0, 0, LORA_IQ_INVERTED, 1000);
-  Radio.SetRxConfig(MODEM_LORA, LORA_BW_500, LORA_SF7, LORA_CR_4_6, 0,
-                    RADIO_PREAMBLE_DETECTOR_32_BITS, 0,
-                    LORA_PACKET_FIXED_LENGTH, 0, LORA_CRC_ON, 0, 0,
-                    LORA_IQ_INVERTED, false);
+  // Radio.SetRxConfig(MODEM_LORA, LORA_BW_500, LORA_SF7, LORA_CR_4_6, 0,
+  //                   RADIO_PREAMBLE_DETECTOR_32_BITS, 0,
+  //                   LORA_PACKET_FIXED_LENGTH, 0, LORA_CRC_ON, 0, 0,
+  //                   LORA_IQ_INVERTED, false);
 
   Radio.SetMaxPayloadLength(MODEM_LORA, strlen(buffer));
   Radio.SetChannel(FREQUENCY);
@@ -133,23 +132,17 @@ int main(void) {
                          IRQ_RADIO_NONE);
 
   // Transmitter code
-  HAL_Delay(Radio.GetWakeupTime() + TCXO_TIME_MARGIN);
+  delay(DELAY_MS * (Radio.GetWakeupTime() + TCXO_TIME_MARGIN));
+  Radio.Send(buffer, strlen(buffer));
 
-  UTIL_TIMER_Create(&timerTransmit, UINT32_MAX, UTIL_TIMER_ONESHOT,
-                    TransmitPacket, NULL);
-  UTIL_TIMER_SetPeriod(&timerTransmit, TRANSMIT_PERIOD_MS);
-
-  // Start transmitting a packet
-  // UTIL_TIMER_Start(&timerTransmit);
-  */
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1) {
+    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_4);
+    delay(DELAY_MS * 1000);
     /* USER CODE END WHILE */
-    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_5);
-    HAL_Delay(blinkDelay);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -218,11 +211,17 @@ void MX_SUBGHZ_Init(void) {
 }
 
 /* USER CODE BEGIN 4 */
+void delay(const uint32_t delay) {
+  volatile int i;
+  for (i = 0; i < delay; i++) {
+  };
+}
+
 void Gpio_Init() {
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   GPIO_InitTypeDef GPIO_InitStruct;
-  GPIO_InitStruct.Pin = GPIO_PIN_5;
+  GPIO_InitStruct.Pin = GPIO_PIN_4;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -230,19 +229,24 @@ void Gpio_Init() {
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 }
 
-static void TransmitPacket(void *arg) { Radio.Send(buffer, strlen(buffer)); }
-
 static void OnTxDone(void) {
   Radio.Sleep();
-  blinkDelay = 200;
-  // Only transmit the packet once
-  // UTIL_TIMER_Start(&timerTransmit);
+
+  while (1) {
+    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_4);
+    delay(DELAY_MS * 200);
+  }
 }
 
 static void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi,
                      int8_t LoraSnr_FskCfo) {}
 
-static void OnTxTimeout(void) {}
+static void OnTxTimeout(void) {
+  while (1) {
+    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_4);
+    delay(DELAY_MS * 200);
+  }
+}
 
 static void OnRxTimeout(void) {}
 
@@ -258,8 +262,8 @@ void Error_Handler(void) {
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
   while (1) {
-    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_5);
-    HAL_Delay(100);
+    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_4);
+    delay(DELAY_MS * 100);
   }
   /* USER CODE END Error_Handler_Debug */
 }
